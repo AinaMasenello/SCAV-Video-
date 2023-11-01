@@ -1,4 +1,6 @@
 import subprocess
+import numpy as np
+from scipy.fftpack import dct, idct
 
 #EX 1:
 
@@ -14,8 +16,8 @@ def translate_yuv_rgb(y,u,v):
     B = y + 2.032*u
     return [R,G,B]
 
-print(translate_rgb_yuv(0,128,0))
-print(translate_yuv_rgb(75.1360, -37.0420, -65.8943))
+#print(translate_rgb_yuv(0,128,0))
+#print(translate_yuv_rgb(75.1360, -37.0420, -65.8943))
 
 #EX 2:
     
@@ -32,7 +34,7 @@ input_image = '/Users/ainamasenello/Documents/GitHub/SCAV-Video-/prova.jpeg'
 output_image = '/Users/ainamasenello/Documents/GitHub/SCAV-Video-/prova_320.jpeg'
 desired_width = 320
 
-resize(input_image, output_image, desired_width)
+#resize(input_image, output_image, desired_width)
 
 #EX 3:
 
@@ -68,7 +70,7 @@ def serpentine(file_path):
         
 file_path = '/Users/ainamasenello/Documents/GitHub/SCAV-Video-/lenna.jpeg'
 
-print(serpentine(file_path))
+#print(serpentine(file_path))
 
 #EX 4:
 
@@ -85,7 +87,7 @@ def compress_and_convert_to_bw(input_image, output_image, quality=0):
     # Run the FFmpeg command
     subprocess.run(command, check=True)
 output_image = '/Users/ainamasenello/Documents/GitHub/SCAV-Video-/prova_bw.jpeg'
-compress_and_convert_to_bw(input_image, output_image)
+#compress_and_convert_to_bw(input_image, output_image)
 
 #EX 5:
 
@@ -112,4 +114,48 @@ def run_length_encode(input_bytes):
     return bytes(encoded_data)
 
 original_bytes = b'\x01\x01\x01\x02\x03\x03\x04\x04\x04\x05'
-print(run_length_encode(original_bytes))
+#print(run_length_encode(original_bytes))
+
+#EX 6:
+
+class DCTConverter:
+    def __init__(self):
+        pass
+
+    def dct_encode(self, data):
+        """
+        Encode input data using Discrete Cosine Transform (DCT).
+
+        Args:
+            data (np.ndarray): Input data to be encoded.
+
+        Returns:
+            np.ndarray: Encoded data using DCT.
+        """
+        return dct(data, norm='ortho')
+
+    def dct_decode(self, encoded_data):
+        """
+        Decode data previously encoded using DCT.
+
+        Args:
+            encoded_data (np.ndarray): Data encoded using DCT.
+
+        Returns:
+            np.ndarray: Decoded data.
+        """
+        return idct(encoded_data, norm='ortho')
+    
+
+data_to_encode = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+    
+# Create an instance of the DCTConverter
+dct_converter = DCTConverter()
+
+# Encode the data using DCT
+encoded_data = dct_converter.dct_encode(data_to_encode)
+print("Encoded Data:", encoded_data)
+
+# Decode the data
+decoded_data = dct_converter.dct_decode(encoded_data)
+print("Decoded Data:", decoded_data)
